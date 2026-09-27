@@ -171,7 +171,7 @@
             opacity: 0.9;
         }
 
-        /* ----- SOLID COVER (إلغاء الشفافية كلياً) ----- */
+        /* ----- SOLID COVER ----- */
         .cover-page {
             background-color: #0b1120 !important;
             background-image: linear-gradient(rgba(11, 17, 32, 0.7), rgba(11, 17, 32, 0.9)), url('1000150926.jpg') !important;
@@ -374,9 +374,9 @@
         </div>
     </div>
 
-    <!-- Hidden Audio Player -->
+    <!-- Hidden Audio Player with Local MP3 File -->
     <audio id="audio-player" loop>
-        <source id="audio-source" src="https://ia800705.us.archive.org/28/items/AbdulrahmanMohammedYamanHawah/Abdulrahman%20Mohammed%20-%20Yaman%20Hawah.mp3" type="audio/mp3">
+        <source id="audio-source" src="song1.mp3" type="audio/mp3">
     </audio>
 
     <!-- 📖 Interactive 3D Book -->
@@ -599,7 +599,7 @@
         const songTitle = document.getElementById('song-title');
 
         const songs = {
-            'yaman': { title: 'عبد الرحمن محمد - يا من هواه', src: 'https://ia800705.us.archive.org/28/items/AbdulrahmanMohammedYamanHawah/Abdulrahman%20Mohammed%20-%20Yaman%20Hawah.mp3' },
+            'yaman': { title: 'عبد الرحمن محمد - يا من هواه', src: 'song1.mp3' },
             'quloolaha': { title: 'عبد الرحمن محمد - قولوا لها', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
             'asabaka': { title: 'عبد الرحمن محمد - أصابك عشق', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' },
             'lamma': { title: 'عبد الرحمن محمد - ولما تلاقينا', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3' }
