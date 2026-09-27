@@ -8,6 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;600;700;900&family=Reem+Kufi:wght@600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti JS for Surprise Effects -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     
     <style>
         * {
@@ -17,7 +19,7 @@
         }
 
         body {
-            background: linear-gradient(rgba(10, 15, 26, 0.85), rgba(10, 15, 26, 0.92)), 
+            background: linear-gradient(rgba(10, 15, 26, 0.88), rgba(10, 15, 26, 0.95)), 
                         url('1000150926.jpg') center/cover no-repeat fixed;
             font-family: 'Amiri', serif;
             min-height: 100vh;
@@ -104,7 +106,7 @@
 
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* ----- Book Wrapper (Larger Size) ----- */
+        /* ----- Book Wrapper (Larger Dimensions) ----- */
         .book-wrapper {
             perspective: 2500px;
             width: 98%;
@@ -168,13 +170,14 @@
             opacity: 0.9;
         }
 
-        /* Cover Styling WITH CUSTOM IMAGE */
+        /* Solid Cover Styling with Image */
         .cover-page {
-            background: linear-gradient(rgba(15, 23, 42, 0.65), rgba(15, 23, 42, 0.85)), 
+            background-color: #0f172a !important;
+            background: linear-gradient(rgba(15, 23, 42, 0.65), rgba(15, 23, 42, 0.88)), 
                         url('1000150926.jpg') center/cover no-repeat !important;
             color: #f8fafc;
             border: 5px double #3b82f6;
-            box-shadow: inset 0 0 40px rgba(0,0,0,0.8), 0 15px 35px rgba(0,0,0,0.7);
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.9), 0 15px 35px rgba(0,0,0,0.8);
         }
 
         .cover-page h1 {
@@ -354,48 +357,48 @@
     <div class="music-player">
         <div class="music-info">
             <i class="fa-solid fa-compact-disc" id="disc-icon"></i>
-            <span id="song-title">لأقعدن على الطريق وأشتكي</span>
+            <span id="song-title">عبد الرحمن محمد - يا من هواه</span>
         </div>
         <div class="music-controls">
             <button class="music-btn" onclick="togglePlay()"><i class="fa-solid fa-play" id="play-btn"></i></button>
             <select class="song-select" id="song-select" onchange="changeSong()">
-                <option value="laaqudan">لأقعدن على الطريق وأشتكي</option>
-                <option value="quloolaha">قولوا لها</option>
-                <option value="asabaka">أصابك عشق</option>
-                <option value="lamma">ولما تلاقينا</option>
+                <option value="yaman">عبد الرحمن محمد - يا من هواه</option>
+                <option value="quloolaha">عبد الرحمن محمد - قولوا لها</option>
+                <option value="asabaka">عبد الرحمن محمد - أصابك عشق</option>
+                <option value="lamma">عبد الرحمن محمد - ولما تلاقينا</option>
             </select>
         </div>
     </div>
 
-    <!-- Hidden Audio Player -->
+    <!-- Hidden Audio Player with Embedded Real Voice Track -->
     <audio id="audio-player" loop>
-        <source id="audio-source" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
+        <source id="audio-source" src="https://ia800705.us.archive.org/28/items/AbdulrahmanMohammedYamanHawah/Abdulrahman%20Mohammed%20-%20Yaman%20Hawah.mp3" type="audio/mp3">
     </audio>
 
     <!-- 📖 Interactive 3D Book -->
     <div class="book-wrapper">
         <div class="book">
 
-            <!-- PAGE 1: Cover & Intro -->
+            <!-- PAGE 1: Solid Cover & Intro -->
             <div class="page" id="p1" onclick="pageClick(1, event)">
                 <div class="front cover-page">
                     <div class="ornament"><i class="fa-solid fa-feather-pointed"></i></div>
                     <h1>About Reham</h1>
                     <div class="ornament" style="margin-top: 20px;"><i class="fa-solid fa-book-bookmark"></i></div>
-                    <p style="color: #f1f5f9; font-family: 'Cairo'; margin-top: 30px; font-size: 1.05rem; font-weight: 600; text-shadow: 0 2px 4px #000;">اضغط على الكود أو الغلاف لفتح الكتاب ✨</p>
+                    <p style="color: #f1f5f9; font-family: 'Cairo'; margin-top: 30px; font-size: 1.05rem; font-weight: 600; text-shadow: 0 2px 4px #000;">اضغط على الغلاف لفتح الكتاب ✨</p>
                 </div>
                 <div class="back">
                     <div class="ornament">🪶 ✦ 🪶</div>
                     <h2 class="page-title">Good morning princess</h2>
-                    <p style="font-family: 'Cairo'; color: #2563eb; font-size: 1.15rem; margin: 20px 0; font-weight: 700; line-height: 1.8;">
+                    <p style="font-family: 'Cairo'; color: #2563eb; font-size: 1.15rem; margin: 25px 0; font-weight: 700; line-height: 1.8;">
                         I couldn’t find the right words to describe you…<br>so I let the poetry speak for me
                     </p>
 
                     <p style="font-family: 'Cairo'; font-size: 1rem; color: #475569; margin-bottom: 25px;">
-                        اضغط على زر المفاجأة بالأسفل لفتح صفحة الشعر الخاصة بكِ ✨
+                        اضغط على زر المفاجأة بالأسفل لاكتشاف قصيدة الشعر الخاصة بكِ 🎉
                     </p>
 
-                    <button class="btn-custom" onclick="nextPage(event)"><i class="fa-solid fa-wand-magic-sparkles"></i> المفاجأة (الشعر)</button>
+                    <button class="btn-custom" onclick="triggerSurprise(event)"><i class="fa-solid fa-wand-magic-sparkles"></i> المفاجأة (الشعر)</button>
 
                     <div style="position: relative; width: 100%; min-height: 60px; margin-top: 20px;">
                         <button class="btn-custom" onclick="nextPage(event)">Let's make your day</button>
@@ -405,7 +408,7 @@
                 </div>
             </div>
 
-            <!-- PAGE 2: Isolated Poem Page (المفاجأة) -->
+            <!-- PAGE 2: Isolated Poem Page (المفاجأة مع التاثيرات) -->
             <div class="page" id="p2" onclick="pageClick(2, event)">
                 <div class="front">
                     <div class="ornament">✨ 📜 ✨</div>
@@ -465,7 +468,7 @@
                     <div class="ornament">🎓 ✦ 🎓</div>
                     <h2 class="page-title">Achievements</h2>
                     
-                    <img src="1000152458.jpg" onerror="this.src='https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80'" alt="الأستاذة رماش رحمة" class="achievement-img">
+                    <img src="1000152439.jpg" alt="الأستاذة رماش رحمة" class="achievement-img">
 
                     <p class="text-body" style="text-align: center; font-size: 1.15rem; margin-top: 20px; color: #0f172a; font-weight: 700;">
                         «بعض الأساتذة يعلّموننا الدروس، وبعضهم يعلّموننا كيف نترك أثرًا في الحياة؛ وأنتِ من أولئك الذين لا يُنسون.»
@@ -550,6 +553,16 @@
             flipPage(pageNum);
         }
 
+        function triggerSurprise(e) {
+            if(e) e.stopPropagation();
+            flipPage(2);
+            confetti({
+                particleCount: 130,
+                spread: 90,
+                origin: { y: 0.6 }
+            });
+        }
+
         function nextPage(e) {
             if(e) e.stopPropagation();
             if (currentPage < totalPages) {
@@ -582,7 +595,7 @@
         const songTitle = document.getElementById('song-title');
 
         const songs = {
-            'laaqudan': { title: 'لأقعدن على الطريق وأشتكي', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
+            'yaman': { title: 'عبد الرحمن محمد - يا من هواه', src: 'https://ia800705.us.archive.org/28/items/AbdulrahmanMohammedYamanHawah/Abdulrahman%20Mohammed%20-%20Yaman%20Hawah.mp3' },
             'quloolaha': { title: 'عبد الرحمن محمد - قولوا لها', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
             'asabaka': { title: 'عبد الرحمن محمد - أصابك عشق', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' },
             'lamma': { title: 'عبد الرحمن محمد - ولما تلاقينا', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3' }
