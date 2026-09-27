@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Reham - كتاب التهنئة الأسطوري</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;600;700;900&family=Reem+Kufi:wght@600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(rgba(10, 15, 26, 0.85), rgba(10, 15, 26, 0.92)), 
+                        url('1000150926.jpg') center/cover no-repeat fixed;
+            font-family: 'Amiri', serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            color: #1e293b;
+            padding: 10px 5px;
+        }
+
+        /* ----- Music Player Top Bar ----- */
+        .music-player {
+            position: fixed;
+            top: 10px;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.96);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(74, 144, 226, 0.4);
+            border-radius: 30px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+            width: 95%;
+            max-width: 600px;
+            color: #e0e6ed;
+        }
+
+        .music-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .music-info i {
+            color: #3b82f6;
+            font-size: 1.1rem;
+            animation: spin 4s linear infinite;
+        }
+
+        .music-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .music-btn {
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.5);
+            color: #60a5fa;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        select.song-select {
+            background: #0f172a;
+            color: #e2e8f0;
+            border: 1px solid #3b82f6;
+            border-radius: 15px;
+            padding: 4px 10px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.8rem;
+            outline: none;
+            cursor: pointer;
+            max-width: 180px;
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* ----- Book Wrapper (Larger Size) ----- */
+        .book-wrapper {
+            perspective: 2500px;
+            width: 98%;
+            max-width: 1000px;
+            height: 82vh;
+            min-height: 580px;
+            margin-top: 50px;
+            position: relative;
+        }
+
+        .book {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s ease;
+        }
+
+        /* Page Structure */
+        .page {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            top: 0;
+            right: 0;
+            transform-origin: left center;
+            transform-style: preserve-3d;
+            transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+            cursor: pointer;
+        }
+
+        .front, .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            backface-visibility: hidden;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.1), 0 8px 20px rgba(0, 0, 0, 0.4);
+            padding: 25px 20px;
+            border-radius: 8px 0 0 8px;
+            background: #fcfbf7;
+            border: 1px solid #d4ceb8;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            overflow-y: auto;
+        }
+
+        .back {
+            transform: rotateY(180deg);
+            border-radius: 0 8px 8px 0;
+        }
+
+        .ornament {
+            color: #2563eb;
+            font-size: 1.2rem;
+            margin: 2px 0;
+            opacity: 0.9;
+        }
+
+        /* Cover Styling WITH CUSTOM IMAGE */
+        .cover-page {
+            background: linear-gradient(rgba(15, 23, 42, 0.65), rgba(15, 23, 42, 0.85)), 
+                        url('1000150926.jpg') center/cover no-repeat !important;
+            color: #f8fafc;
+            border: 5px double #3b82f6;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.8), 0 15px 35px rgba(0,0,0,0.7);
+        }
+
+        .cover-page h1 {
+            font-family: 'Reem Kufi', sans-serif;
+            font-size: 3rem;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(59, 130, 246, 0.9), 0 3px 8px rgba(0,0,0,0.9);
+            margin-top: 30px;
+        }
+
+        h2.page-title {
+            font-family: 'Reem Kufi', sans-serif;
+            color: #0f172a;
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 4px;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+            width: 100%;
+        }
+
+        .btn-custom {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: #ffffff;
+            border: 1px solid #3b82f6;
+            padding: 12px 24px;
+            font-size: 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            margin: 6px 2px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-custom:hover {
+            background: #2563eb;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        #btn-no {
+            position: absolute;
+            transition: 0.15s ease-out;
+            background: #991b1b;
+            border-color: #f87171;
+        }
+
+        .poem-text {
+            background: #f1f5f9;
+            border-right: 4px solid #2563eb;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: right;
+            font-size: 1.15rem;
+            line-height: 2.1;
+            color: #0f172a;
+            width: 100%;
+            font-weight: 600;
+        }
+
+        .achievement-img {
+            max-width: 95%;
+            max-height: 220px;
+            border-radius: 10px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+            border: 3px solid #fff;
+            object-fit: cover;
+            margin: 8px 0;
+        }
+
+        .text-body {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: #1e293b;
+            text-align: justify;
+            font-weight: 500;
+        }
+
+        .messages-section {
+            width: 100%;
+            text-align: center;
+        }
+
+        .msg-input {
+            width: 98%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #3b82f6;
+            border-radius: 8px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            background: #ffffff;
+        }
+
+        .voice-controls {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 6px 0;
+        }
+
+        .msg-list {
+            max-height: 150px;
+            overflow-y: auto;
+            text-align: right;
+            background: #ffffff;
+            border: 1px dashed #3b82f6;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            margin-top: 8px;
+        }
+
+        .msg-item {
+            padding: 6px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #0f172a;
+        }
+
+        .flipped {
+            transform: rotateY(-180deg);
+        }
+
+        #p1 { z-index: 5; }
+        #p2 { z-index: 4; }
+        #p3 { z-index: 3; }
+        #p4 { z-index: 2; }
+
+        .controls-bar {
+            margin-top: 15px;
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        @media (max-width: 768px) {
+            .book-wrapper {
+                height: 78vh;
+                min-height: 520px;
+            }
+            .front, .back {
+                padding: 18px 12px;
+            }
+            h2.page-title {
+                font-size: 1.4rem;
+            }
+            .text-body {
+                font-size: 0.98rem;
+                line-height: 1.75;
+            }
+            .poem-text {
+                font-size: 0.98rem;
+                line-height: 1.9;
+            }
+            .achievement-img {
+                max-height: 150px;
+            }
+            .cover-page h1 {
+                font-size: 2.2rem;
+            }
+            .btn-custom {
+                font-size: 0.9rem;
+                padding: 10px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 🎵 Music Player Bar -->
+    <div class="music-player">
+        <div class="music-info">
+            <i class="fa-solid fa-compact-disc" id="disc-icon"></i>
+            <span id="song-title">لأقعدن على الطريق وأشتكي</span>
+        </div>
+        <div class="music-controls">
+            <button class="music-btn" onclick="togglePlay()"><i class="fa-solid fa-play" id="play-btn"></i></button>
+            <select class="song-select" id="song-select" onchange="changeSong()">
+                <option value="laaqudan">لأقعدن على الطريق وأشتكي</option>
+                <option value="quloolaha">قولوا لها</option>
+                <option value="asabaka">أصابك عشق</option>
+                <option value="lamma">ولما تلاقينا</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Hidden Audio Player -->
+    <audio id="audio-player" loop>
+        <source id="audio-source" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
+    </audio>
+
+    <!-- 📖 Interactive 3D Book -->
+    <div class="book-wrapper">
+        <div class="book">
+
+            <!-- PAGE 1: Cover & Intro -->
+            <div class="page" id="p1" onclick="pageClick(1, event)">
+                <div class="front cover-page">
+                    <div class="ornament"><i class="fa-solid fa-feather-pointed"></i></div>
+                    <h1>About Reham</h1>
+                    <div class="ornament" style="margin-top: 20px;"><i class="fa-solid fa-book-bookmark"></i></div>
+                    <p style="color: #f1f5f9; font-family: 'Cairo'; margin-top: 30px; font-size: 1.05rem; font-weight: 600; text-shadow: 0 2px 4px #000;">اضغط على الكود أو الغلاف لفتح الكتاب ✨</p>
+                </div>
+                <div class="back">
+                    <div class="ornament">🪶 ✦ 🪶</div>
+                    <h2 class="page-title">Good morning princess</h2>
+                    <p style="font-family: 'Cairo'; color: #2563eb; font-size: 1.15rem; margin: 20px 0; font-weight: 700; line-height: 1.8;">
+                        I couldn’t find the right words to describe you…<br>so I let the poetry speak for me
+                    </p>
+
+                    <p style="font-family: 'Cairo'; font-size: 1rem; color: #475569; margin-bottom: 25px;">
+                        اضغط على زر المفاجأة بالأسفل لفتح صفحة الشعر الخاصة بكِ ✨
+                    </p>
+
+                    <button class="btn-custom" onclick="nextPage(event)"><i class="fa-solid fa-wand-magic-sparkles"></i> المفاجأة (الشعر)</button>
+
+                    <div style="position: relative; width: 100%; min-height: 60px; margin-top: 20px;">
+                        <button class="btn-custom" onclick="nextPage(event)">Let's make your day</button>
+                        <button class="btn-custom" id="btn-no" onmouseover="moveNoBtn()" onclick="moveNoBtn()">No</button>
+                    </div>
+                    <div class="ornament">🪶 ✦ 🪶</div>
+                </div>
+            </div>
+
+            <!-- PAGE 2: Isolated Poem Page (المفاجأة) -->
+            <div class="page" id="p2" onclick="pageClick(2, event)">
+                <div class="front">
+                    <div class="ornament">✨ 📜 ✨</div>
+                    <h2 class="page-title">قصيدة الأميرة</h2>
+                    
+                    <div class="poem-text">
+                        لما تبدّى الصبحُ من خلفِ غيمِهِ<br>
+                        وألقى على وجهِ المدى ثوبَ ضوئهِ،<br><br>
+                        رأيتُ وجهًا لا يُشابهُ صبحَهُ،<br>
+                        فالشمسُ تمضي، وهو يبقى سَناهُ.<br><br>
+                        في مقلتيها للنهارِ مهابةٌ،<br>
+                        وفي سكونِ الطرفِ ليلٌ مُصفَّى.<br><br>
+                        إذا أقبلتْ، خُيّلَ للعينِ أنَّها<br>
+                        شمسٌ أتتْ من أفقِها متهادية.
+                    </div>
+
+                    <button class="btn-custom" onclick="nextPage(event)" style="margin-top: 15px;">متابعة القراءة 📖</button>
+                    <div class="ornament">✨</div>
+                </div>
+                <div class="back">
+                    <div class="ornament">📜 ✦ 📜</div>
+                    <h2 class="page-title">تتمة القصيدة</h2>
+                    
+                    <div class="poem-text">
+                        وإذا أطرقتْ، رأيتُ في أجفانِها<br>
+                        بدرًا يخبّئ نورَهُ في غيمةٍ وادعة.<br><br>
+                        لا الشمسُ تُدركُ بعضَ ما في وجهِها،<br>
+                        ولا الهلالُ إذا استدارَ يُشابهُهُ.<br><br>
+                        فيها من الضحى كبرياؤهُ،<br>
+                        ومن البدرِ ذلك الهدوءُ الذي<br>
+                        يجعلُ الليلَ جميلًا دونَ أن يتكلّم.<br><br>
+                        وحينَ مرّتْ، لم أقلْ شيئًا؛<br>
+                        فالبيانُ أحيانًا أن تتركَ للجمالِ بقيّةَ الكلام.
+                    </div>
+
+                    <button class="btn-custom" onclick="nextPage(event)" style="margin-top: 15px;">إلى الإنجازات 🌟</button>
+                    <div class="ornament">🪶</div>
+                </div>
+            </div>
+
+            <!-- PAGE 3: Achievements (Lathmon Novel + Teacher) -->
+            <div class="page" id="p3" onclick="pageClick(3, event)">
+                <div class="front">
+                    <div class="ornament">📘 ✒️ 📘</div>
+                    <h2 class="page-title">Achievements</h2>
+                    
+                    <img src="1000152439.jpg" onerror="this.src='https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80'" alt="رواية لأثمون" class="achievement-img">
+
+                    <p class="text-body">
+                        إلى رحمة رماش، صاحبة القلم الذي لا يكتب الحكايات فحسب، بل يمنحها روحًا تُرى بين السطور… ✒️<br>
+                        مبارك لكِ «لأثمون»؛ هذا الأثر الذي خرج من بين أناملكِ ليجد له مكانًا في قلوب القرّاء.<br>
+                        بعض الأقلام تترك حبرًا على الورق، وبعضها يترك أثرًا في الذاكرة… وقلمكِ من النوع الذي لا يُنسى. 🤍📖
+                    </p>
+                    <div class="ornament">🖋️</div>
+                </div>
+                <div class="back">
+                    <div class="ornament">🎓 ✦ 🎓</div>
+                    <h2 class="page-title">Achievements</h2>
+                    
+                    <img src="1000152458.jpg" onerror="this.src='https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80'" alt="الأستاذة رماش رحمة" class="achievement-img">
+
+                    <p class="text-body" style="text-align: center; font-size: 1.15rem; margin-top: 20px; color: #0f172a; font-weight: 700;">
+                        «بعض الأساتذة يعلّموننا الدروس، وبعضهم يعلّموننا كيف نترك أثرًا في الحياة؛ وأنتِ من أولئك الذين لا يُنسون.»
+                    </p>
+
+                    <button class="btn-custom" onclick="nextPage(event)" style="margin-top: 20px;">صفحة الميلاد 🎂</button>
+                    <div class="ornament">🎓</div>
+                </div>
+            </div>
+
+            <!-- PAGE 4: Today is your birthday & Wishes -->
+            <div class="page" id="p4" onclick="pageClick(4, event)">
+                <div class="front">
+                    <div class="ornament">🎉 🎂 🎉</div>
+                    <h2 class="page-title">Today is your birthday</h2>
+
+                    <p class="text-body" style="font-size: 1.15rem; line-height: 2;">
+                        إلى رحمة… 🤍<br><br>
+                        يا من تُرهق نفسها أكثر مما ينبغي، وتمشي بقلبٍ رهوف لا يعرف إلا الرحمة، وتجد بين صفحات الكتب عالمها الذي يشبهها…<br><br>
+                        في يوم ميلادكِ، أتمنى أن يكون عامكِ القادم فصلًا أجمل من كل ما سبق.<br>
+                        كل عام وأنتِ بخير يا رحمة، ويا أجمل حكاية لم تُكتب فصولها بعد. 📖✨
+                    </p>
+
+                    <button class="btn-custom" onclick="nextPage(event)" style="margin-top: 15px;">انتقل للتهاني 💌</button>
+                    <div class="ornament">🎂</div>
+                </div>
+                <div class="back">
+                    <div class="ornament">💌 🎙️ 💌</div>
+                    <h2 class="page-title">شاركنا تهنئتك</h2>
+                    
+                    <div class="messages-section">
+                        <p style="font-family: 'Cairo'; font-size: 0.95rem; color: #334155; font-weight: 600;">اكتب رسالة تهنئة لرحمة أو سجل رسالة صوتية:</p>
+                        
+                        <input type="text" id="sender-name" class="msg-input" placeholder="اسمك...">
+                        <textarea id="sender-text" class="msg-input" rows="2" placeholder="اكتب تهنئتك هنا..."></textarea>
+                        
+                        <div class="voice-controls">
+                            <button class="btn-custom" style="padding: 8px 16px; font-size: 0.85rem;" onclick="recordVoice()" id="record-btn">
+                                <i class="fa-solid fa-microphone"></i> تسجيل صوتي
+                            </button>
+                            <button class="btn-custom" style="padding: 8px 16px; font-size: 0.85rem;" onclick="addMessage()">إرسال 💌</button>
+                        </div>
+
+                        <div class="msg-list" id="msg-list">
+                            <div class="msg-item"><b>صديق:</b> كل عام وأنتِ المبدعة دائماً يا رحمة! ✨</div>
+                        </div>
+                    </div>
+                    <div class="ornament">✨ 📖 ✨</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Quick Navigation Bar -->
+    <div class="controls-bar">
+        <button class="btn-custom" onclick="prevPageManual()"><i class="fa-solid fa-arrow-right"></i> الصفحة السابقة</button>
+        <button class="btn-custom" onclick="nextPageManual()">الصفحة التالية <i class="fa-solid fa-arrow-left"></i></button>
+    </div>
+
+    <script>
+        let currentPage = 0;
+        const totalPages = 4;
+
+        function flipPage(pageNum) {
+            const page = document.getElementById(`p${pageNum}`);
+            if (pageNum === currentPage + 1) {
+                page.classList.add('flipped');
+                currentPage = pageNum;
+                setTimeout(() => { page.style.zIndex = pageNum; }, 600);
+            } else if (pageNum === currentPage) {
+                page.classList.remove('flipped');
+                currentPage = pageNum - 1;
+                page.style.zIndex = totalPages - pageNum + 1;
+            }
+        }
+
+        function pageClick(pageNum, event) {
+            if(event.target.tagName === 'BUTTON' || event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA' || event.target.tagName === 'SELECT') {
+                return;
+            }
+            flipPage(pageNum);
+        }
+
+        function nextPage(e) {
+            if(e) e.stopPropagation();
+            if (currentPage < totalPages) {
+                flipPage(currentPage + 1);
+            }
+        }
+
+        function nextPageManual() {
+            if (currentPage < totalPages) {
+                flipPage(currentPage + 1);
+            }
+        }
+
+        function prevPageManual() {
+            if (currentPage > 0) {
+                flipPage(currentPage);
+            }
+        }
+
+        function moveNoBtn() {
+            const btnNo = document.getElementById('btn-no');
+            const x = Math.floor(Math.random() * 160) - 80;
+            const y = Math.floor(Math.random() * 160) - 80;
+            btnNo.style.transform = `translate(${x}px, ${y}px)`;
+        }
+
+        const audio = document.getElementById('audio-player');
+        const playBtn = document.getElementById('play-btn');
+        const songSelect = document.getElementById('song-select');
+        const songTitle = document.getElementById('song-title');
+
+        const songs = {
+            'laaqudan': { title: 'لأقعدن على الطريق وأشتكي', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
+            'quloolaha': { title: 'عبد الرحمن محمد - قولوا لها', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
+            'asabaka': { title: 'عبد الرحمن محمد - أصابك عشق', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' },
+            'lamma': { title: 'عبد الرحمن محمد - ولما تلاقينا', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3' }
+        };
+
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                playBtn.className = "fa-solid fa-pause";
+            } else {
+                audio.pause();
+                playBtn.className = "fa-solid fa-play";
+            }
+        }
+
+        function changeSong() {
+            const selected = songSelect.value;
+            audio.src = songs[selected].src;
+            songTitle.textContent = songs[selected].title;
+            audio.play();
+            playBtn.className = "fa-solid fa-pause";
+        }
+
+        function addMessage() {
+            const name = document.getElementById('sender-name').value.trim() || 'فاعل خير';
+            const text = document.getElementById('sender-text').value.trim();
+            if(text) {
+                const msgList = document.getElementById('msg-list');
+                const newMsg = document.createElement('div');
+                newMsg.className = 'msg-item';
+                newMsg.innerHTML = `<b>${name}:</b> ${text}`;
+                msgList.prepend(newMsg);
+                document.getElementById('sender-text').value = '';
+            }
+        }
+
+        let isRecording = false;
+        function recordVoice() {
+            const recordBtn = document.getElementById('record-btn');
+            if(!isRecording) {
+                isRecording = true;
+                recordBtn.innerHTML = `<i class="fa-solid fa-stop" style="color:red;"></i> جاري التسجيل...`;
+            } else {
+                isRecording = false;
+                recordBtn.innerHTML = `<i class="fa-solid fa-microphone"></i> تسجيل صوتي`;
+                const msgList = document.getElementById('msg-list');
+                const newMsg = document.createElement('div');
+                newMsg.className = 'msg-item';
+                newMsg.innerHTML = `<b>رسالة صوتية:</b> 🎤 [تم تسجيل مقطع صوتي بنجاح]`;
+                msgList.prepend(newMsg);
+            }
+        }
+    </script>
+</body>
+</html>
