@@ -1252,10 +1252,10 @@ body{
 
 /* =====================================================
    PASSWORD
-   غيّر كلمة السر هنا
+   تم تغيير كلمة السر فقط
 ===================================================== */
 
-const SITE_PASSWORD = "1234";
+const SITE_PASSWORD = "28/09/2026 rehma";
 
 
 function checkPassword(){
@@ -1436,3 +1436,747 @@ function triggerSurprise(e){
 
         origin:{
             y:.6
+        }
+
+    });
+
+}
+
+
+/* =====================================================
+   NO BUTTON
+===================================================== */
+
+function moveNoBtn(){
+
+    const btn =
+    document.getElementById("btn-no");
+
+    const parent =
+    btn.parentElement;
+
+    const maxX =
+    Math.max(
+        0,
+        parent.clientWidth-100
+    );
+
+    const maxY =
+    Math.max(
+        0,
+        parent.clientHeight-50
+    );
+
+    const x =
+    Math.random()*maxX-maxX/2;
+
+    const y =
+    Math.random()*maxY-maxY/2;
+
+    btn.style.transform=
+    `translate(${x}px,${y}px)`;
+
+}
+
+
+/* =====================================================
+   MUSIC PLAYER
+===================================================== */
+
+const audio =
+document.getElementById("audio-player");
+
+const playBtn =
+document.getElementById("play-btn");
+
+const songSelect =
+document.getElementById("song-select");
+
+const songTitle =
+document.getElementById("song-title");
+
+const discIcon =
+document.getElementById("disc-icon");
+
+
+const songs={
+
+    "song1.mp3":
+    "عبد الرحمن محمد - يا من هواه",
+
+    "song2.mp3":
+    "عبد الرحمن محمد - قولوا لها",
+
+    "song3.mp3":
+    "عبد الرحمن محمد - أصابك عشق",
+
+    "song4.mp3":
+    "عبد الرحمن محمد - ولما تلاقينا"
+
+};
+
+
+function togglePlay(){
+
+    if(audio.paused){
+
+        audio.play()
+        .then(()=>{
+
+            playBtn.className=
+            "fa-solid fa-pause";
+
+            discIcon.style.animation=
+            "spin 3s linear infinite";
+
+        })
+        .catch(()=>{
+
+            alert(
+            "اضغط مرة أخرى لتشغيل الموسيقى."
+            );
+
+        });
+
+    }else{
+
+        audio.pause();
+
+        playBtn.className=
+        "fa-solid fa-play";
+
+        discIcon.style.animation="none";
+
+    }
+
+}
+
+
+function changeSong(){
+
+    const src =
+    songSelect.value;
+
+    audio.src=src;
+
+    songTitle.textContent=
+    songs[src];
+
+    audio.play()
+    .then(()=>{
+
+        playBtn.className=
+        "fa-solid fa-pause";
+
+    })
+    .catch(()=>{});
+
+}
+
+
+audio.addEventListener(
+"ended",
+function(){
+
+    playBtn.className=
+    "fa-solid fa-play";
+
+});
+
+
+/* =====================================================
+   MESSAGES
+===================================================== */
+
+const MESSAGE_KEY =
+"reham_messages";
+
+
+function getMessages(){
+
+    try{
+
+        return JSON.parse(
+            localStorage.getItem(
+                MESSAGE_KEY
+            )
+        ) || [];
+
+    }catch{
+
+        return [];
+
+    }
+
+}
+
+
+function saveMessages(messages){
+
+    localStorage.setItem(
+        MESSAGE_KEY,
+        JSON.stringify(messages)
+    );
+
+}
+
+
+function escapeHTML(text){
+
+    const div =
+    document.createElement("div");
+
+    div.textContent=text;
+
+    return div.innerHTML;
+
+}
+
+
+function renderMessages(){
+
+    const list =
+    document.getElementById("msg-list");
+
+    const messages =
+    getMessages();
+
+    list.innerHTML="";
+
+    if(messages.length===0){
+
+        list.innerHTML=`
+
+        <div class="msg-item">
+
+            <b>صديق:</b>
+            كل عام وأنتِ المبدعة دائماً يا رحمة! ✨
+
+        </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    messages.forEach(message=>{
+
+        const item =
+        document.createElement("div");
+
+        item.className="msg-item";
+
+
+        if(message.type==="text"){
+
+            item.innerHTML=`
+
+            <b>
+            ${escapeHTML(message.name)}:
+            </b>
+
+            ${escapeHTML(message.text)}
+
+            `;
+
+        }
+
+
+        if(message.type==="voice"){
+
+            item.innerHTML=`
+
+            <b>
+            ${escapeHTML(message.name)}:
+            </b>
+
+            <br>
+
+            <audio
+            class="audio-message"
+            controls
+            src="${message.audio}"
+            ></audio>
+
+            `;
+
+        }
+
+
+        list.appendChild(item);
+
+    });
+
+}
+
+
+function addMessage(){
+
+    const nameInput =
+    document.getElementById(
+        "sender-name"
+    );
+
+    const textInput =
+    document.getElementById(
+        "sender-text"
+    );
+
+
+    const name =
+    nameInput.value.trim()
+    || "فاعل خير";
+
+    const text =
+    textInput.value.trim();
+
+
+    if(!text){
+
+        alert(
+        "اكتب تهنئتك أولاً ❤️"
+        );
+
+        return;
+
+    }
+
+
+    const messages =
+    getMessages();
+
+
+    messages.unshift({
+
+        type:"text",
+
+        name:name,
+
+        text:text,
+
+        date:new Date().toISOString()
+
+    });
+
+
+    saveMessages(messages);
+
+
+    textInput.value="";
+
+    renderMessages();
+
+}
+
+
+/* =====================================================
+   REAL VOICE RECORDING
+===================================================== */
+
+let mediaRecorder=null;
+
+let audioChunks=[];
+
+let isRecording=false;
+
+let currentStream=null;
+
+
+async function recordVoice(){
+
+    const button =
+    document.getElementById(
+        "record-btn"
+    );
+
+    const status =
+    document.getElementById(
+        "record-status"
+    );
+
+
+    if(!isRecording){
+
+        try{
+
+            currentStream =
+            await navigator.mediaDevices
+            .getUserMedia({
+                audio:true
+            });
+
+
+            audioChunks=[];
+
+
+            let options={};
+
+
+            if(
+                MediaRecorder.isTypeSupported(
+                    "audio/webm;codecs=opus"
+                )
+            ){
+
+                options.mimeType=
+                "audio/webm;codecs=opus";
+
+            }
+
+
+            mediaRecorder=
+            new MediaRecorder(
+                currentStream,
+                options
+            );
+
+
+            mediaRecorder.ondataavailable=
+            function(event){
+
+                if(event.data.size>0){
+
+                    audioChunks.push(
+                        event.data
+                    );
+
+                }
+
+            };
+
+
+            mediaRecorder.onstop=
+            async function(){
+
+                const blob =
+                new Blob(
+                    audioChunks,
+                    {
+                        type:
+                        mediaRecorder.mimeType
+                        || "audio/webm"
+                    }
+                );
+
+
+                const nameInput =
+                document.getElementById(
+                    "sender-name"
+                );
+
+
+                const name =
+                nameInput.value.trim()
+                || "فاعل خير";
+
+
+                const audioUrl =
+                URL.createObjectURL(
+                    blob
+                );
+
+
+                await saveVoiceToDatabase(
+                    blob,
+                    name
+                );
+
+
+                addVoiceMessage(
+                    audioUrl,
+                    name
+                );
+
+
+                if(currentStream){
+
+                    currentStream
+                    .getTracks()
+                    .forEach(
+                        track=>track.stop()
+                    );
+
+                }
+
+            };
+
+
+            mediaRecorder.start();
+
+            isRecording=true;
+
+            button.classList.add(
+                "recording"
+            );
+
+            button.innerHTML=`
+
+            <i class="fa-solid fa-stop"></i>
+            إيقاف التسجيل
+
+            `;
+
+            status.textContent=
+            "🎙️ جاري التسجيل... اضغط لإيقافه";
+
+
+        }catch(error){
+
+            console.error(error);
+
+            status.textContent=
+            "لم يتم السماح باستخدام الميكروفون.";
+
+            alert(
+            "يجب السماح للموقع باستخدام الميكروفون حتى تستطيع تسجيل رسالة صوتية."
+            );
+
+        }
+
+    }else{
+
+        mediaRecorder.stop();
+
+        isRecording=false;
+
+        button.classList.remove(
+            "recording"
+        );
+
+        button.innerHTML=`
+
+        <i class="fa-solid fa-microphone"></i>
+        تسجيل صوتي
+
+        `;
+
+        status.textContent=
+        "⏳ جارٍ حفظ التسجيل...";
+
+    }
+
+}
+
+
+/* =====================================================
+   INDEXED DB FOR VOICE
+===================================================== */
+
+let db;
+
+
+function openVoiceDB(){
+
+    return new Promise(
+    (resolve,reject)=>{
+
+        const request =
+        indexedDB.open(
+            "RehamBirthdayDB",
+            1
+        );
+
+
+        request.onupgradeneeded=
+        function(event){
+
+            const database =
+            event.target.result;
+
+            if(
+                !database.objectStoreNames
+                .contains("voices")
+            ){
+
+                database.createObjectStore(
+                    "voices",
+                    {
+                        keyPath:"id",
+                        autoIncrement:true
+                    }
+                );
+
+            }
+
+        };
+
+
+        request.onsuccess=
+        function(event){
+
+            db=event.target.result;
+
+            resolve(db);
+
+        };
+
+
+        request.onerror=
+        function(){
+
+            reject(
+                request.error
+            );
+
+        };
+
+    });
+
+}
+
+
+async function saveVoiceToDatabase(
+    blob,
+    name
+){
+
+    try{
+
+        if(!db){
+
+            await openVoiceDB();
+
+        }
+
+
+        return new Promise(
+        (resolve,reject)=>{
+
+            const transaction =
+            db.transaction(
+                ["voices"],
+                "readwrite"
+            );
+
+
+            const store =
+            transaction.objectStore(
+                "voices"
+            );
+
+
+            const request =
+            store.add({
+
+                blob:blob,
+
+                name:name,
+
+                date:
+                new Date().toISOString()
+
+            });
+
+
+            request.onsuccess=
+            ()=>resolve(
+                request.result
+            );
+
+            request.onerror=
+            ()=>reject(
+                request.error
+            );
+
+        });
+
+    }catch(error){
+
+        console.error(
+            "Voice DB error:",
+            error
+        );
+
+    }
+
+}
+
+
+function addVoiceMessage(
+    audioUrl,
+    name
+){
+
+    const messages =
+    getMessages();
+
+
+    messages.unshift({
+
+        type:"voice",
+
+        name:name,
+
+        audio:audioUrl,
+
+        date:
+        new Date().toISOString()
+
+    });
+
+
+    saveMessages(messages);
+
+
+    renderMessages();
+
+
+    document.getElementById(
+        "record-status"
+    ).textContent=
+    "✅ تم حفظ الرسالة الصوتية.";
+
+}
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+window.addEventListener(
+"DOMContentLoaded",
+function(){
+
+    renderMessages();
+
+    audio.src="song1.mp3";
+
+    openVoiceDB()
+    .catch(
+        error=>console.log(error)
+    );
+
+});
+
+
+/* =====================================================
+   ANIMATION
+===================================================== */
+
+const style =
+document.createElement("style");
+
+style.textContent=`
+
+@keyframes spin{
+
+    from{
+        transform:rotate(0deg);
+    }
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+
+`;
+
+document.head.appendChild(style);
+
+</script>
+
+</body>
+        </html>
